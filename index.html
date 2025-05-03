@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Returan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    async function searchData() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const response = await fetch('https://sheets.googleapis.com/v4/spreadsheets/1LeemyncaPOfkgT_ofvVWtbWKtDNEnEi4Syq7RwNhue8/values/All?key=AIzaSyDvS2ec_MDjzwfyHAdbUL1CJcnK96GK_II');
+      const data = await response.json();
+      const rows = data.values.slice(1);
+      const results = rows.filter(row =>
+        row[0].toLowerCase().includes(query) ||
+        (row[2] && row[2].toLowerCase().includes(query))
+      );
+
+      const tableBody = document.getElementById('resultsBody');
+      tableBody.innerHTML = '';
+
+      if (results.length > 0) {
+        results.forEach((row, index) => {
+          const pod = row[3] ? `<button onclick="showImage('${row[3]}')" class="text-pink-500 hover:underline">Lihat Bukti POD</button>` : 'Tidak ada bukti POD';
+          tableBody.innerHTML += `
+            <tr class="hover:bg-white/5">
+              <td class="px-4 py-2 border border-white/20">${index + 1}</td>
+              <td class="px-4 py-2 border border-white/20">${row[0]}</td>
+              <td class="px-4 py-2 border border-white/20">${row[1]}</td>
+              <td class="px-4 py-2 border border-white/20">${row[2]}</td>
+              <td class="px-4 py-2 border border-white/20 text-center">${pod}</td>
+            </tr>
+          `;
+        });
+        document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-gray-400">Data tidak ditemukan</td></tr>`;
+      }
+    }
+
+    function showImage(gdriveId) {
+      const popup = document.getElementById('popup');
+      const popupImg = document.getElementById('popupImg');
+      popupImg.src = `https://drive.google.com/uc?id=${gdriveId}`;
+      popup.classList.remove('hidden');
+    }
+
+    function closePopup() {
+      document.getElementById('popup').classList.add('hidden');
+    }
+  </script>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+  <div class="flex items-center justify-center min-h-screen">
+    <div class="bg-white/5 backdrop-blur-md rounded-2xl p-8 w-full max-w-xl text-center">
+      <p class="text-pink-500 uppercase tracking-widest font-medium text-sm">ArfStywn</p>
+      <h1 class="text-3xl font-bold mt-2 mb-4">Data Returan</h1>
+      <p class="text-gray-300 mb-6">Cari data returan dengan mengetikkan resi atau nama seller di bawah ini dengan benar.</p>
+      <input id="searchInput" type="text" placeholder="Resi / Seller" class="w-full px-4 py-3 rounded-xl text-gray-900 mb-4 focus:outline-none" />
+      <button onclick="searchData()" class="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-xl font-semibold">Get Notified →</button>
+    </div>
+  </div>
+
+  <div id="resultsSection" class="max-w-6xl mx-auto mt-12 px-4">
+    <table class="w-full table-auto border-collapse">
+      <thead class="bg-pink-500 text-white">
+        <tr>
+          <th class="px-4 py-2 border border-white/20">No.</th>
+          <th class="px-4 py-2 border border-white/20">Resi</th>
+          <th class="px-4 py-2 border border-white/20">Waktu Pengiriman</th>
+          <th class="px-4 py-2 border border-white/20">Seller</th>
+          <th class="px-4 py-2 border border-white/20">POD</th>
+        </tr>
+      </thead>
+      <tbody id="resultsBody" class="bg-white/5">
+        <!-- Dynamic Rows Here -->
+      </tbody>
+    </table>
+  </div>
+
+  <div id="popup" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50">
+    <div class="relative bg-white rounded-xl overflow-hidden max-w-3xl w-full">
+      <button onclick="closePopup()" class="absolute top-2 right-2 text-black text-xl font-bold">&times;</button>
+      <img id="popupImg" src="" alt="Bukti POD" class="w-full max-h-[90vh] object-contain" />
+    </div>
+  </div>
+</body>
+</html>
