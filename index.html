@@ -1,213 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Data Returan</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: system-ui, sans-serif;
-      background-color: #0e0e11;
-      color: white;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Returan</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, sans-serif;
+            background-color: #0e0e11;
+            color: white;
+            overflow-x: hidden;
+        }
 
-    .container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      min-height: 100vh;
-      text-align: center;
-      padding: 2rem;
-    }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
 
-    .title {
-      font-size: 0.9rem;
-      color: #ff2e63;
-      letter-spacing: 2px;
-    }
+        .title {
+            font-size: 0.9rem;
+            color: #ff2e63;
+            letter-spacing: 2px;
+        }
 
-    .headline {
-      font-size: 2.5rem;
-      font-weight: bold;
-      margin: 0.5rem 0;
-    }
+        .headline {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
 
-    .description {
-      color: #aaa;
-      max-width: 500px;
-      margin-bottom: 2rem;
-    }
+        .description {
+            color: #aaa;
+            max-width: 500px;
+            margin-bottom: 2rem;
+        }
 
-    input[type="text"] {
-      padding: 1rem;
-      font-size: 1rem;
-      border-radius: 12px;
-      border: none;
-      width: 100%;
-      max-width: 500px;
-      margin-bottom: 1rem;
-      background-color: #2e2e32;
-      color: white;
-    }
+        input[type="text"] {
+            padding: 1rem;
+            font-size: 1rem;
+            border-radius: 12px;
+            border: none;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 1rem;
+            background-color: #2e2e32;
+            color: white;
+        }
 
-    button {
-      background-color: #ff2e63;
-      border: none;
-      padding: 1rem 2rem;
-      color: white;
-      font-size: 1rem;
-      border-radius: 12px;
-      cursor: pointer;
-    }
+        button {
+            background-color: #ff2e63;
+            border: none;
+            padding: 1rem 2rem;
+            color: white;
+            font-size: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+        }
 
-    .results {
-      max-width: 90%;
-      margin: 50px auto;
-      overflow-x: auto;
-    }
+        .results {
+            max-width: 90%;
+            margin: 50px auto;
+            overflow-x: auto;
+        }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background-color: rgba(255,255,255,0.05);
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
 
-    th {
-      background-color: #ff2e63;
-      color: white;
-      padding: 12px;
-      text-align: left;
-    }
+        th {
+            background-color: #ff2e63;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
 
-    td {
-      padding: 12px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-    }
+        td {
+            padding: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-    .pod-button {
-      background-color: #ff2e63;
-      padding: 6px 12px;
-      border-radius: 8px;
-      color: white;
-      text-decoration: none;
-      cursor: pointer;
-    }
+        .pod-button {
+            background-color: #ff2e63;
+            padding: 6px 12px;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
-    .modal {
-      position: fixed;
-      z-index: 1000;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
-      display: flex; justify-content: center; align-items: center;
-    }
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    .modal-content {
-      background-color: #fff;
-      color: #000;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 400px;
-      text-align: center;
-      position: relative;
-    }
+        .modal-content {
+            background-color: #fff;
+            color: #000;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: auto;
+            text-align: center;
+            position: relative;
+        }
 
-    .hidden {
-      display: none;
-    }
+        .modal-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
 
-    .close {
-      position: absolute;
-      top: 10px; right: 20px;
-      font-size: 24px;
-      cursor: pointer;
-    }
-  </style>
+        .hidden {
+            display: none;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .pagination button {
+            background-color: #2e2e32;
+            border: 1px solid #444;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .pagination button.active {
+            background-color: #ff2e63;
+            border-color: #ff2e63;
+        }
+    </style>
 </head>
+
 <body>
-  <div class="container">
-    <div class="title">ArfStywn</div>
-    <div class="headline">Data Returan</div>
-    <div class="description">Cari data returan dengan mengetikkan resi atau nama seller di bawah ini dengan benar.</div>
-    <input type="text" id="searchInput" placeholder="Resi / Seller" />
-    <button onclick="searchData()">Cari Data →</button>
-  </div>
-
-  <div class="results">
-    <table id="resultTable"></table>
-  </div>
-
-  <!-- Modal jika data tidak ditemukan -->
-  <div id="noResultModal" class="modal hidden">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <p>Data tidak ditemukan. Pastikan Resi atau Seller benar.</p>
+    <div class="container">
+        <div class="title">ArfStywn</div>
+        <div class="headline">Data Returan</div>
+        <div class="description">Cari data returan dengan mengetikkan resi atau nama seller di bawah ini dengan benar.
+        </div>
+        <input type="text" id="searchInput" placeholder="Resi / Seller" />
+        <button id="searchButton">Cari Data →</button>
     </div>
-  </div>
 
-  <script>
-    const apiKey = "AIzaSyDvS2ec_MDjzwfyHAdbUL1CJcnK96GK_II";
-    const sheetId = "1LeemyncaPOfkgT_ofvVWtbWKtDNEnEi4Syq7RwNhue8";
-    const sheetName = "All";
+    <div class="results">
+        <table id="resultTable"></table>
+        <div id="pagination" class="pagination"></div>
+    </div>
 
-    function showModal() {
-      document.getElementById('noResultModal').classList.remove('hidden');
-    }
+    <div id="noResultModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p>Data tidak ditemukan. Pastikan Resi atau Seller benar.</p>
+        </div>
+    </div>
 
-    function closeModal() {
-      document.getElementById('noResultModal').classList.add('hidden');
-    }
+    <div id="podModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" onclick="closePodModal()">&times;</span>
+            <img id="podImage" src="" alt="Bukti POD" />
+        </div>
+    </div>
 
-    async function searchData() {
-      const query = document.getElementById("searchInput").value.trim().toLowerCase();
-      if (!query) return;
+    <script>
+        document.getElementById("searchButton").addEventListener("click", searchData);
+        document.getElementById("searchInput").addEventListener("keyup", function (event) {
+            if (event.key === "Enter") {
+                searchData();
+            }
+        });
 
-      const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
-      const res = await fetch(url);
-      const data = await res.json();
-      const rows = data.values.slice(1); // exclude headers
+        document.getElementById("searchInput").addEventListener("input", () => {
+            searchData();
+        });
 
-      const filtered = rows.filter(r =>
-        r[0]?.toLowerCase().includes(query) || r[2]?.toLowerCase().includes(query)
-      );
+        const apiKey = "AIzaSyDvS2ec_MDjzwfyHAdbUL1CJcnK96GK_II";
+        const sheetId = "1LeemyncaPOfkgT_ofvVWtbWKtDNEnEi4Syq7RwNhue8";
+        const sheetName = "All";
+        const ROWS_PER_PAGE = 500;
+        let currentPage = 1;
+        let currentData = [];
 
-      if (filtered.length === 0) {
-        showModal();
-        return;
-      }
+        function showModal() {
+            document.getElementById('noResultModal').classList.remove('hidden');
+        }
 
-      const table = document.getElementById("resultTable");
-      table.innerHTML = `
-        <tr>
-          <th>No.</th>
-          <th>Resi</th>
-          <th>Waktu Pengiriman</th>
-          <th>Seller</th>
-          <th>POD</th>
-        </tr>
-      `;
+        function closeModal() {
+            document.getElementById('noResultModal').classList.add('hidden');
+        }
 
-      filtered.forEach((row, idx) => {
-        const [resi, waktu, seller, pod] = row;
-        const podButton = pod
-          ? `<button class="pod-button" onclick="window.open('${pod}', '_blank')">Lihat Bukti POD</button>`
-          : `<span>Tidak ada bukti POD</span>`;
+        function closePodModal() {
+            document.getElementById('podModal').classList.add('hidden');
+            document.getElementById('podImage').src = '';
+        }
 
-        table.innerHTML += `
-          <tr>
-            <td>${idx + 1}</td>
-            <td>${resi || "-"}</td>
-            <td>${waktu || "-"}</td>
-            <td>${seller || "-"}</td>
-            <td>${podButton}</td>
-          </tr>
-        `;
-      });
+        function openPodEmbed(link) {
+            if (link.match(/\.(jpeg|jpg|gif|png|webp)$/i)) {
+                const image = document.getElementById('podImage');
+                image.src = link;
+                document.getElementById('podModal').classList.remove('hidden');
+            } else {
+                window.open(link, '_blank');
+            }
+        }
 
-      document.querySelector(".results").scrollIntoView({ behavior: "smooth" });
-    }
-  </script>
+        function renderPagination(data) {
+            const totalPages = Math.ceil(data.length / ROWS_PER_PAGE);
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement("button");
+                btn.textContent = i;
+                if (i === currentPage) btn.classList.add("active");
+                btn.onclick = () => {
+                    currentPage = i;
+                    renderTable(currentData);
+                    renderPagination(currentData);
+                };
+                pagination.appendChild(btn);
+            }
+        }
+
+        function renderTable(data) {
+            const table = document.getElementById("resultTable");
+            table.innerHTML = `
+                <tr>
+                    <th>No.</th>
+                    <th>Resi</th>
+                    <th>Waktu Pengiriman</th>
+                    <th>Seller</th>
+                    <th>POD</th>
+                </tr>
+            `;
+            const start = (currentPage - 1) * ROWS_PER_PAGE;
+            const end = start + ROWS_PER_PAGE;
+            data.slice(start, end).forEach((row, idx) => {
+                const [resi, waktu, seller, pod] = row;
+                const isImage = pod?.match(/\.(jpeg|jpg|gif|png|webp)$/i);
+                const icon = isImage ? '📷' : '🔗';
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${start + idx + 1}</td>
+                    <td>${resi || "-"}</td>
+                    <td>${waktu || "-"}</td>
+                    <td>${seller || "-"}</td>
+                    <td>${pod ? `<button class="pod-button" onclick="openPodEmbed('${pod}')">${icon} Lihat POD</button>` : "<span>Tidak ada bukti POD</span>"}</td>
+                `;
+                table.appendChild(tr);
+            });
+        }
+
+        async function searchData() {
+            const query = document.getElementById("searchInput").value.trim().toLowerCase();
+            if (!query) return;
+
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            const rows = data.values.slice(1);
+
+            if (query === "all") {
+                currentData = [...rows].sort((a, b) => (a[2] || "").localeCompare(b[2] || ""));
+            } else {
+                currentData = rows.filter(r =>
+                    r[0]?.toLowerCase().includes(query) || r[2]?.toLowerCase().includes(query)
+                );
+            }
+
+            currentPage = 1;
+            if (currentData.length === 0 && query !== "all") {
+                showModal();
+                return;
+            }
+
+            renderTable(currentData);
+            renderPagination(currentData);
+            document.querySelector(".results").scrollIntoView({behavior: "smooth"});
+        }
+    </script>
 </body>
+
 </html>
